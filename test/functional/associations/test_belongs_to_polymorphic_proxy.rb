@@ -11,6 +11,19 @@ class BelongsToPolymorphicProxyTest < Test::Unit::TestCase
     status.target.should be_nil
   end
 
+  should "be able to use the belongs_to association" do
+    project = Project.new(:name => "mongomapper")
+    status = Status.create
+    project.statuses << status
+    project.save!
+    
+    status_from_db = Status.find(status.id)
+    status_from_db.target.should_not be_nil
+    status_from_db.target_id.should == project.id
+    status_from_db.target_type.should == "Project"
+    status_from_db.target.name.should == "mongomapper"
+  end
+
   should "be able to replace the association" do
     status = Status.new
     project = Project.new(:name => "mongomapper")
