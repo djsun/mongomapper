@@ -7,8 +7,8 @@ class ManyEmbeddedPolymorphicProxyTest < Test::Unit::TestCase
   end
   
   should "default reader to empty array" do
-    catalog = Catalog.new
-    catalog.medias.should == []
+    Catalog.new.medias.should == []
+    Catalog.new.medias.inspect.should == "[]"
   end
 
   should "allow adding to association like it was an array" do
@@ -87,8 +87,8 @@ class ManyEmbeddedPolymorphicProxyTest < Test::Unit::TestCase
     end
     
     should "default reader to empty array" do
-      fleet = TrModels::Fleet.new
-      fleet.transports.should == []
+      TrModels::Fleet.new.transports.should == []
+      TrModels::Fleet.new.transports.inspect.should == "[]"
     end
     
     should "allow adding to association like it was an array" do

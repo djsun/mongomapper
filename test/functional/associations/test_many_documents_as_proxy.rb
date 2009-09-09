@@ -8,6 +8,7 @@ class ManyDocumentsAsProxyTest < Test::Unit::TestCase
 
   should "default reader to empty array" do
     Post.new.comments.should == []
+    Post.new.comments.inspect.should == "[]"
   end
 
   should "add type and id key to polymorphic class base" do
