@@ -33,6 +33,16 @@ module MongoMapper
         raise NotImplementedError
       end
 
+      def inspect
+        load_target
+        @target.inspect
+      end
+      
+      def nil?
+        load_target
+        @target.nil?
+      end
+
       protected
         def method_missing(method, *args)
           if load_target

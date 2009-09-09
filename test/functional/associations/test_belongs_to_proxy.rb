@@ -8,7 +8,8 @@ class BelongsToProxyTest < Test::Unit::TestCase
   
   should "default to nil" do
     status = Status.new
-    status.project.should be_nil
+    status.project.nil?.should == true
+    status.project.inspect.should == "nil"
   end
   
   should "be able to replace the association" do
@@ -30,7 +31,8 @@ class BelongsToProxyTest < Test::Unit::TestCase
     
     from_db = Status.find(status.id)
     from_db.project = nil
-    from_db.project.should be_nil
+    from_db.project.nil?.should == true
+    from_db.project.inspect.should == "nil"
   end
   
   context "association id set but document not found" do
@@ -39,7 +41,8 @@ class BelongsToProxyTest < Test::Unit::TestCase
     end
 
     should "return nil instead of raising error" do
-      @status.project.should be_nil
+      @status.project.nil?.should == true
+      @status.project.inspect.should == "nil"
     end
   end
 end
