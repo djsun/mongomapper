@@ -8,6 +8,7 @@ class ManyPolymorphicProxyTest < Test::Unit::TestCase
   
   should "default reader to empty array" do
     Room.new.messages.should == []
+    Room.new.messages.inspect.should == "[]"
   end
   
   should "add type key to polymorphic class base" do
