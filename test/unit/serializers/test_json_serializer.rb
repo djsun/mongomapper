@@ -13,6 +13,7 @@ class JsonSerializationTest < Test::Unit::TestCase
     key :created_at, Time
     key :awesome, Boolean
     key :preferences, Hash
+    key :hiding, String
     
     many :tags, :class_name => 'JsonSerializationTest::Tag'
   end
@@ -42,6 +43,7 @@ class JsonSerializationTest < Test::Unit::TestCase
     assert json.include?(%("created_at":#{ActiveSupport::JSON.encode(Time.utc(2006, 8, 1))}))
     assert_match %r{"awesome":true}, json
     assert_match %r{"preferences":\{"shows":"anime"\}}, json
+    assert_match %r{"hiding":null}, json
   end
   
   should "allow attribute filtering with only" do
@@ -53,6 +55,7 @@ class JsonSerializationTest < Test::Unit::TestCase
     assert_no_match %r{"awesome"}, json
     assert_no_match %r{"created_at"}, json
     assert_no_match %r{"preferences"}, json
+    assert_no_match %r{"hiding"}, json
   end
   
   should "allow attribute filtering with except" do
@@ -64,6 +67,7 @@ class JsonSerializationTest < Test::Unit::TestCase
     assert_match %r{"awesome"}, json
     assert_match %r{"created_at"}, json
     assert_match %r{"preferences"}, json
+    assert_match %r{"hiding"}, json
   end
   
   context "_id key" do
@@ -141,7 +145,7 @@ class JsonSerializationTest < Test::Unit::TestCase
         Contact.new(:name => 'Mary', :age => 14)
       ]
     end
-
+  
     should "allow attribute filtering with only" do
       json = @contacts.to_json(:only => :name)
       assert_match %r{\{"name":"David"\}}, json

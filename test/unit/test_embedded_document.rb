@@ -342,12 +342,12 @@ class EmbeddedDocumentTest < Test::Unit::TestCase
     context "attributes" do
       should "default to hash with _id" do
         doc = @document.new
-        doc.attributes.keys.should == ['_id']
+        doc.attributes.keys.sort.should == %w(_id age name)
       end
 
-      should "return all keys that aren't nil" do
+      should "return all keys, including ones with nil values" do
         doc = @document.new(:name => 'string', :age => nil)
-        doc.attributes.keys.sort.should == ['_id', 'name']
+        doc.attributes.keys.sort.should == %w(_id age name)
         doc.attributes.values.should include('string')
       end
     end

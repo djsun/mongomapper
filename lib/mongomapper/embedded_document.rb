@@ -196,9 +196,14 @@ module MongoMapper
               end
             end
           
-          attrs[name] = value unless value.nil?
+          attrs[name] = value
         end
         attrs.merge!(embedded_association_attributes)
+      end
+      
+      # all attributes, even ones with null values
+      def all_attributes
+        
       end
 
       def [](name)
