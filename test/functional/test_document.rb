@@ -733,7 +733,7 @@ class DocumentTest < Test::Unit::TestCase
       @doc.age.should == 27
     end
 
-    should "set defaults correctly" do
+    should_eventually "set defaults correctly" do
       @doc.nick_name.should == ""
     end
 
