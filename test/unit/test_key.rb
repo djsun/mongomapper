@@ -148,7 +148,7 @@ class KeyTest < Test::Unit::TestCase
       @key.get(nil).should == 'baz'
     end
 
-    should "return value if not blank" do
+    should "return value if not nil" do
       @key.get('foobar').should == 'foobar'
     end
     
