@@ -139,7 +139,7 @@ class KeyTest < Test::Unit::TestCase
     end
   end
   
-  context "getting a value with a default set" do
+  context "string key with 'baz' default" do
     setup do
       @key = Key.new(:foo, String, :default => 'baz')
     end
@@ -151,12 +151,24 @@ class KeyTest < Test::Unit::TestCase
     should "return value if not nil" do
       @key.get('foobar').should == 'foobar'
     end
-    
-    should "work with Boolean type and false value" do
+  end
+  
+  context "string key with '' default" do
+    setup do
+      @key = Key.new(:foo, String, :default => '')
+    end
+
+    should "return default value if value nil" do
+      @key.get(nil).should == ''
+    end
+  end
+  
+  context "boolean key" do
+    should "with false default" do
       Key.new(:active, Boolean, :default => false).get(nil).should be_false
     end
 
-    should "work with Boolean type and true value" do
+    should "with true default" do
       Key.new(:active, Boolean, :default => true).get(nil).should be_true
     end
   end
