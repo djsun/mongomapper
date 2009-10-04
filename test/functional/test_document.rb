@@ -9,6 +9,7 @@ class DocumentTest < Test::Unit::TestCase
 
       key :first_name, String
       key :last_name, String
+      key :nick_name, String, :default => ""
       key :age, Integer
       key :date, Date
     end
@@ -748,6 +749,10 @@ class DocumentTest < Test::Unit::TestCase
     should "save attributes" do
       @doc.first_name.should == 'John'
       @doc.age.should == 27
+    end
+
+    should "set defaults correctly" do
+      @doc.nick_name.should == ""
     end
 
     should "update attributes in the database" do
