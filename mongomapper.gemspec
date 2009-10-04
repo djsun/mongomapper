@@ -133,20 +133,20 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activesupport>, [">= 0"])
-      s.add_runtime_dependency(%q<mongodb-mongo>, ["= 0.14.1"])
+      s.add_runtime_dependency(%q<mongo>, ["= 0.15"])
       s.add_runtime_dependency(%q<jnunemaker-validatable>, ["= 1.7.2"])
       s.add_development_dependency(%q<mocha>, ["= 0.9.4"])
       s.add_development_dependency(%q<jnunemaker-matchy>, ["= 0.4.0"])
     else
       s.add_dependency(%q<activesupport>, [">= 0"])
-      s.add_dependency(%q<mongodb-mongo>, ["= 0.14.1"])
+      s.add_dependency(%q<mongo>, ["= 0.15"])
       s.add_dependency(%q<jnunemaker-validatable>, ["= 1.7.2"])
       s.add_dependency(%q<mocha>, ["= 0.9.4"])
       s.add_dependency(%q<jnunemaker-matchy>, ["= 0.4.0"])
     end
   else
     s.add_dependency(%q<activesupport>, [">= 0"])
-    s.add_dependency(%q<mongodb-mongo>, ["= 0.14.1"])
+    s.add_dependency(%q<mongo>, ["= 0.15"])
     s.add_dependency(%q<jnunemaker-validatable>, ["= 1.7.2"])
     s.add_dependency(%q<mocha>, ["= 0.9.4"])
     s.add_dependency(%q<jnunemaker-matchy>, ["= 0.4.0"])

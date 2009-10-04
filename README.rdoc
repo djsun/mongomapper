@@ -19,7 +19,7 @@ Releases are tagged on github and also released as gems on github and rubyforge.
 == Dependencies
 
 * ActiveSupport (activesupport)
-* Mongo Ruby Driver (mongodb-mongo)
+* Mongo Ruby Driver (mongo)
 * My fork of the validatable gem (jnunemaker-validatable)
 
 == Documentation
