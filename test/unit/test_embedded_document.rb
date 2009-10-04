@@ -414,14 +414,12 @@ class EmbeddedDocumentTest < Test::Unit::TestCase
     context "to_mongo" do
       should "default to hash with _id key" do
         doc = @document.new
-        doc.to_mongo.keys.should == ['_id']
+        doc.to_mongo.keys.sort.should == %w(_id age name)
       end
       
-      should "return all keys with non nil values" do
+      should "return all keys" do
         doc = @document.new(:name => 'string', :age => nil)
-        doc.to_mongo.keys.sort.should == ['_id', 'name']
-        doc.to_mongo.values.should include('string')
-        doc.to_mongo.values.should_not include(nil)
+        doc.to_mongo.keys.sort.should == %w(_id age name)
       end
     end
     

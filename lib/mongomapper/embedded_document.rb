@@ -243,7 +243,7 @@ module MongoMapper
         
         _keys.each_pair do |name, key|
           value = key.set(read_attribute(key.name))
-          attrs[name] = value unless value.nil?
+          attrs[name] = value
         end
         
         embedded_associations.each do |association|
