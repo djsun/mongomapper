@@ -43,8 +43,8 @@ module MongoMapper
         total_entries = count(options[:conditions] || {})
         collection    = Pagination::PaginationProxy.new(total_entries, page, per_page)
 
-        options[:limit]   = collection.limit
-        options[:offset]  = collection.offset
+        options[:limit] = collection.limit
+        options[:skip]  = collection.skip
 
         collection.subject = find_every(options)
         collection

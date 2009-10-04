@@ -9,7 +9,7 @@ class FinderOptionsTest < Test::Unit::TestCase
   end
   
   should "have symbolize the keys of the hash provided" do
-    FinderOptions.new('offset' => 1).options.keys.map do |key|
+    FinderOptions.new('skip' => 1).options.keys.map do |key|
       key.should be_instance_of(Symbol)
     end
   end
@@ -127,17 +127,17 @@ class FinderOptionsTest < Test::Unit::TestCase
     end
   end
   
-  context "offset" do
+  context "skip" do
     should "default to 0" do
-      FinderOptions.to_mongo_options({})[:offset].should == 0
+      FinderOptions.to_mongo_options({})[:skip].should == 0
     end
     
-    should "use offset provided" do
-      FinderOptions.to_mongo_options(:offset => 2)[:offset].should == 2
+    should "use skip provided" do
+      FinderOptions.to_mongo_options(:skip => 2)[:skip].should == 2
     end
     
     should "covert string to integer" do
-      FinderOptions.to_mongo_options(:offset => '2')[:offset].should == 2
+      FinderOptions.to_mongo_options(:skip => '2')[:skip].should == 2
     end
   end
   
@@ -146,7 +146,7 @@ class FinderOptionsTest < Test::Unit::TestCase
       FinderOptions.to_mongo_options({})[:limit].should == 0
     end
     
-    should "use offset provided" do
+    should "use skip provided" do
       FinderOptions.to_mongo_options(:limit => 2)[:limit].should == 2
     end
     
