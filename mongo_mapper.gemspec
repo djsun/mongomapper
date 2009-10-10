@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{mongo_mapper}
-  s.version = "0.5.0"
+  s.version = "0.5.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["John Nunemaker"]
-  s.date = %q{2009-10-07}
+  s.date = %q{2009-10-08}
   s.default_executable = %q{mmconsole}
   s.email = %q{nunemaker@gmail.com}
   s.executables = ["mmconsole"]
@@ -37,6 +37,7 @@ Gem::Specification.new do |s|
      "lib/mongo_mapper/associations/many_proxy.rb",
      "lib/mongo_mapper/associations/proxy.rb",
      "lib/mongo_mapper/callbacks.rb",
+     "lib/mongo_mapper/dirty.rb",
      "lib/mongo_mapper/document.rb",
      "lib/mongo_mapper/dynamic_finder.rb",
      "lib/mongo_mapper/embedded_document.rb",
@@ -52,6 +53,7 @@ Gem::Specification.new do |s|
      "lib/mongo_mapper/support.rb",
      "lib/mongo_mapper/validations.rb",
      "mongo_mapper.gemspec",
+     "specs.watchr",
      "test/NOTE_ON_TESTING",
      "test/custom_matchers.rb",
      "test/functional/associations/test_belongs_to_polymorphic_proxy.rb",
@@ -64,8 +66,10 @@ Gem::Specification.new do |s|
      "test/functional/test_associations.rb",
      "test/functional/test_binary.rb",
      "test/functional/test_callbacks.rb",
+     "test/functional/test_dirty.rb",
      "test/functional/test_document.rb",
      "test/functional/test_embedded_document.rb",
+     "test/functional/test_logger.rb",
      "test/functional/test_pagination.rb",
      "test/functional/test_rails_compatibility.rb",
      "test/functional/test_validations.rb",
@@ -105,8 +109,10 @@ Gem::Specification.new do |s|
      "test/functional/test_associations.rb",
      "test/functional/test_binary.rb",
      "test/functional/test_callbacks.rb",
+     "test/functional/test_dirty.rb",
      "test/functional/test_document.rb",
      "test/functional/test_embedded_document.rb",
+     "test/functional/test_logger.rb",
      "test/functional/test_pagination.rb",
      "test/functional/test_rails_compatibility.rb",
      "test/functional/test_validations.rb",
@@ -135,20 +141,20 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activesupport>, [">= 0"])
-      s.add_runtime_dependency(%q<mongo>, ["= 0.15"])
+      s.add_runtime_dependency(%q<mongo>, ["= 0.15.1"])
       s.add_runtime_dependency(%q<jnunemaker-validatable>, ["= 1.7.3"])
       s.add_development_dependency(%q<mocha>, ["= 0.9.4"])
       s.add_development_dependency(%q<jnunemaker-matchy>, ["= 0.4.0"])
     else
       s.add_dependency(%q<activesupport>, [">= 0"])
-      s.add_dependency(%q<mongo>, ["= 0.15"])
+      s.add_dependency(%q<mongo>, ["= 0.15.1"])
       s.add_dependency(%q<jnunemaker-validatable>, ["= 1.7.3"])
       s.add_dependency(%q<mocha>, ["= 0.9.4"])
       s.add_dependency(%q<jnunemaker-matchy>, ["= 0.4.0"])
     end
   else
     s.add_dependency(%q<activesupport>, [">= 0"])
-    s.add_dependency(%q<mongo>, ["= 0.15"])
+    s.add_dependency(%q<mongo>, ["= 0.15.1"])
     s.add_dependency(%q<jnunemaker-validatable>, ["= 1.7.3"])
     s.add_dependency(%q<mocha>, ["= 0.9.4"])
     s.add_dependency(%q<jnunemaker-matchy>, ["= 0.4.0"])

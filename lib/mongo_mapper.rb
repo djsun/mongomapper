@@ -1,7 +1,7 @@
 require 'rubygems'
 
 gem 'activesupport'
-gem 'mongo', '0.15'
+gem 'mongo', '0.15.1'
 gem 'jnunemaker-validatable', '1.7.3'
 
 require 'activesupport'
@@ -82,6 +82,7 @@ require 'mongo_mapper/associations/many_embedded_polymorphic_proxy'
 require 'mongo_mapper/associations/many_documents_as_proxy'
 require 'mongo_mapper/callbacks'
 require 'mongo_mapper/finder_options'
+require 'mongo_mapper/dirty'
 require 'mongo_mapper/dynamic_finder'
 require 'mongo_mapper/key'
 require 'mongo_mapper/observing'
