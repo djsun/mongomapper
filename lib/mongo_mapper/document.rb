@@ -28,6 +28,22 @@ module MongoMapper
     end
 
     module ClassMethods
+      def key(*args)
+        key = super
+        create_indexes_for(key)
+        key
+      end
+      
+      def ensure_index(name_or_array, options={})
+        keys_to_index = if name_or_array.is_a?(Array)
+          name_or_array.map { |pair| [pair[0], pair[1]] }
+        else
+          name_or_array
+        end
+        
+        MongoMapper.ensure_index(self, keys_to_index, options)
+      end
+      
       def find(*args)
         options = args.extract_options!
         case args.first
@@ -88,6 +104,10 @@ module MongoMapper
 
       def count(conditions={})
         collection.find(FinderOptions.to_mongo_criteria(conditions)).count
+      end
+
+      def exists?(conditions={})
+        !count(conditions).zero?
       end
 
       def create(*docs)
@@ -187,9 +207,20 @@ module MongoMapper
         end
 
       private
+        def create_indexes_for(key)
+          ensure_index key.name if key.options[:index]
+        end
+        
         def find_every(options)
           criteria, options = FinderOptions.new(options).to_a
-          collection.find(criteria, options).to_a.map { |doc| new(doc) }
+          collection.find(criteria, options).to_a.map do |doc|
+            begin
+              klass = doc['_type'].present? ? doc['_type'].constantize : self
+              klass.new(doc)
+            rescue NameError
+              new(doc)
+            end
+          end
         end
 
         def invert_order_clause(order)
@@ -244,7 +275,7 @@ module MongoMapper
         end
     end
 
-    module InstanceMethods
+    module InstanceMethods      
       def collection
         self.class.collection
       end

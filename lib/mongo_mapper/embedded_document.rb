@@ -22,6 +22,10 @@ module MongoMapper
     end
 
     module ClassMethods
+      def logger
+        MongoMapper.logger
+      end
+      
       def inherited(subclass)
         unless subclass.embeddable?
           subclass.set_collection_name(collection_name)
@@ -49,30 +53,13 @@ module MongoMapper
           keys[key.name] = key
 
           create_accessors_for(key)
-          add_to_subclasses(*args)
-          apply_validations_for(key)
-          create_indexes_for(key)
-
+          create_key_in_subclasses(*args)
+          create_validations_for(key)
+          
           key
         end
-      end
-
-      def add_to_subclasses(*args)
-        return if subclasses.blank?
-
-        subclasses.each do |subclass|
-          subclass.key(*args)
-        end
-      end
-
-      def ensure_index(name_or_array, options={})
-        keys_to_index = if name_or_array.is_a?(Array)
-          name_or_array.map { |pair| [pair[0], pair[1]] }
-        else
-          name_or_array
-        end
-
-        collection.create_index(keys_to_index, options.delete(:unique))
+        
+        key
       end
 
       def embeddable?
@@ -129,12 +116,16 @@ module MongoMapper
         end_eval
         include accessors_module
       end
+      
+      def create_key_in_subclasses(*args)
+        return if subclasses.blank?
 
-      def create_indexes_for(key)
-        ensure_index key.name if key.options[:index]
+        subclasses.each do |subclass|
+          subclass.key(*args)
+        end
       end
 
-      def apply_validations_for(key)
+      def create_validations_for(key)
         attribute = key.name.to_sym
 
         if key.options[:required]
@@ -169,6 +160,10 @@ module MongoMapper
     end
 
     module InstanceMethods
+      def logger
+        self.class.logger
+      end
+      
       def initialize(attrs={})
         unless attrs.nil?
           self.class.associations.each_pair do |name, association|

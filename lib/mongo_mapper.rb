@@ -2,7 +2,7 @@ require 'rubygems'
 
 gem 'activesupport'
 gem 'mongo', '0.15.1'
-gem 'jnunemaker-validatable', '1.7.3'
+gem 'jnunemaker-validatable', '1.7.4'
 
 require 'activesupport'
 require 'mongo'
@@ -40,6 +40,21 @@ module MongoMapper
     end
     
     @@database ||= MongoMapper.connection.db(@@database_name)
+  end
+  
+  def self.ensured_indexes
+    @@ensured_indexes ||= []
+  end
+  
+  def self.ensure_index(klass, keys, options={})
+    ensured_indexes << {:klass => klass, :keys => keys, :options => options}
+  end
+  
+  def self.ensure_indexes!
+    ensured_indexes.each do |index|
+      unique = index[:options].delete(:unique)
+      index[:klass].collection.create_index(index[:keys], unique)
+    end
   end
   
   module Finders

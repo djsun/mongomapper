@@ -142,6 +142,27 @@ class DocumentTest < Test::Unit::TestCase
       end
     end
     
+    context "Using key with custom type with default" do
+      setup do
+        @document.key :window, WindowSize, :default => WindowSize.new(600, 480)
+      end
+
+      should "default to default" do
+        doc = @document.new
+        doc.window.should == WindowSize.new(600, 480)
+        
+      end
+      
+      should "save and load from mongo" do
+        doc = @document.new
+        doc.save
+        
+        from_db = @document.find(doc.id)
+        from_db.window.should == WindowSize.new(600, 480)
+      end
+    end
+    
+    
     context "Creating a single document" do
       setup do
         @doc_instance = @document.create({:first_name => 'John', :last_name => 'Nunemaker', :age => '27'})
@@ -295,7 +316,12 @@ class DocumentTest < Test::Unit::TestCase
           @document.find([@doc1.id]).should == [@doc1]
         end
       end
-
+      
+      should "be able to find using condition auto-detection" do
+        @document.first(:first_name => 'John').should == @doc1
+        @document.all(:last_name => 'Nunemaker', :order => 'age desc').should == [@doc1, @doc3]
+      end
+      
       context "with :all" do
         should "find all documents" do
           @document.find(:all, :order => 'first_name').should == [@doc1, @doc3, @doc2]
@@ -694,39 +720,31 @@ class DocumentTest < Test::Unit::TestCase
       end
 
       should "allow creating index for a key" do
-        index_name = nil
-        lambda {
-          index_name = @document.ensure_index :first_name
-        }.should change { @document.collection.index_information.size }.by(1)
-
-        index_name.should == 'first_name_1'
-        index = @document.collection.index_information[index_name]
-        index.should_not be_nil
-        index.should include(['first_name', 1])
+        @document.ensure_index :first_name
+        MongoMapper.ensure_indexes!
+        
+        @document.should have_index('first_name_1')        
       end
 
       should "allow creating unique index for a key" do
-        @document.collection.expects(:create_index).with(:first_name, true)
         @document.ensure_index :first_name, :unique => true
+        MongoMapper.ensure_indexes!
+        
+        @document.should have_index('first_name_1')
       end
 
       should "allow creating index on multiple keys" do
-        index_name = nil
-        lambda {
-          index_name = @document.ensure_index [[:first_name, 1], [:last_name, -1]]
-        }.should change { @document.collection.index_information.size }.by(1)
-
-        [ 'first_name_1_last_name_-1', 'last_name_-1_first_name_1' ].should include(index_name)
-
-        index = @document.collection.index_information[index_name]
-        index.should_not be_nil
-        index.should include(['first_name', 1])
-        index.should include(['last_name', -1])
+        @document.ensure_index [[:first_name, 1], [:last_name, -1]]
+        MongoMapper.ensure_indexes!
+        
+        @document.should have_index('last_name_-1_first_name_1')        
       end
 
       should "work with :index shortcut when defining key" do
-        @document.expects(:ensure_index).with('father').returns(nil)
         @document.key :father, String, :index => true
+        MongoMapper.ensure_indexes!
+        
+        @document.should have_index('father_1')
       end
     end
   end # Document Class Methods
@@ -923,6 +941,57 @@ class DocumentTest < Test::Unit::TestCase
       end
     end
   end
+  
+  context "Single collection inheritance" do
+    setup do
+      class ::DocParent
+        include MongoMapper::Document
+        key :_type, String
+      end
+      
+      class ::DocChild < ::DocParent; end
+      DocParent.collection.clear
+      
+      @parent = DocParent.new({:name => "Daddy Warbucks"})
+      @child = DocChild.new({:name => "Little Orphan Annie"})
+    end
+
+    teardown do
+      Object.send :remove_const, 'DocParent' if defined?(::DocParent)
+      Object.send :remove_const, 'DocChild' if defined?(::DocChild)
+    end
+
+    should "use the same collection in the subclass" do
+      DocChild.collection.name.should == DocParent.collection.name
+    end
+
+    should "assign the class name into the _type property" do
+      @parent._type.should == 'DocParent'
+      @child._type.should == 'DocChild'
+    end
+
+    should "load the document with the assigned type" do
+      @parent.save
+      @child.save
+
+      collection = DocParent.find(:all)
+      collection.size.should == 2
+      collection.first.should be_kind_of(DocParent)
+      collection.first.name.should == "Daddy Warbucks"
+      collection.last.should be_kind_of(DocChild)
+      collection.last.name.should == "Little Orphan Annie"
+    end
+    
+    should "gracefully handle when the type can't be constantized" do
+      doc = DocParent.new(:name => 'Nunes')
+      doc._type = 'FoobarBaz'
+      doc.save
+      
+      collection = DocParent.all
+      collection.last.should == doc
+      collection.last.should be_kind_of(DocParent)
+    end
+  end
 
   context "timestamping" do
     setup do
@@ -959,6 +1028,29 @@ class DocumentTest < Test::Unit::TestCase
       from_db = @document.find(doc.id)
       from_db.created_at.to_i.should == old_created_at.to_i
       from_db.updated_at.to_i.should_not == old_updated_at.to_i
+    end
+  end
+
+  context "#exist?" do
+    setup do
+      @doc = @document.create(:first_name => "James", :age => 27)
+    end
+
+    should "be true when at least one document exists" do
+      @document.exists?.should == true
+    end
+
+    should "be false when no documents exist" do
+      @doc.destroy
+      @document.exists?.should == false
+    end
+
+    should "be true when at least one document exists that matches the conditions" do
+      @document.exists?(:first_name => "James").should == true
+    end
+
+    should "be false when no documents exist with the provided conditions" do
+      @document.exists?(:first_name => "Jean").should == false
     end
   end
 end
