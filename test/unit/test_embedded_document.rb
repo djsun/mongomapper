@@ -289,6 +289,11 @@ class EmbeddedDocumentTest < Test::Unit::TestCase
       end
     end
     
+    should "have to_param that is id" do
+      doc = @document.new
+      doc.to_param.should == doc.id
+    end
+    
     should "have access to class logger" do
       doc = @document.new
       doc.logger.should == @document.logger
@@ -475,9 +480,15 @@ class EmbeddedDocumentTest < Test::Unit::TestCase
         should "create key and write value for missing key" do
           doc = @document.new
           doc[:foo] = 'string'
-          @document.keys.keys.include?('foo').should be_true
+          doc.metaclass.keys.include?('foo').should be_true
           doc[:foo].should == 'string'
         end
+
+         should "not share the new key" do
+           doc = @document.new
+           doc[:foo] = 'string'
+           @document.keys.should_not include('foo')
+         end
       end
     end
     

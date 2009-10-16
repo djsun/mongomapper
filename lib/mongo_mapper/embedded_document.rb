@@ -198,6 +198,10 @@ module MongoMapper
       def new?
         !!@new_document
       end
+      
+      def to_param
+        id
+      end
 
       def attributes=(attrs)
         return if attrs.blank?
@@ -308,7 +312,7 @@ module MongoMapper
 
       private
         def _keys
-          self.class.keys
+          self.metaclass.keys
         end
         
         def key_names
@@ -324,7 +328,7 @@ module MongoMapper
         end
         
         def ensure_key_exists(name)
-          self.class.key(name) unless respond_to?("#{name}=")
+          self.metaclass.key(name) unless respond_to?("#{name}=")
         end
 
         def read_attribute(name)

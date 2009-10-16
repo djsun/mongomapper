@@ -1,6 +1,6 @@
 require 'rubygems'
 
-gem 'activesupport'
+gem 'activesupport', '>= 2.3'
 gem 'mongo', '0.15.1'
 gem 'jnunemaker-validatable', '1.7.4'
 
@@ -102,7 +102,6 @@ require 'mongo_mapper/dynamic_finder'
 require 'mongo_mapper/key'
 require 'mongo_mapper/observing'
 require 'mongo_mapper/pagination'
-require 'mongo_mapper/save_with_validation'
 require 'mongo_mapper/serialization'
 require 'mongo_mapper/validations'
 require 'mongo_mapper/rails_compatibility/document'

@@ -1,18 +1,18 @@
-require 'pathname'
-require 'pp'
-require 'rubygems'
-require 'shoulda'
+require File.join(File.expand_path(File.dirname(__FILE__) + '/../lib/mongo_mapper'))
 
-gem 'mocha', '0.9.4'
 gem 'jnunemaker-matchy', '0.4.0'
+gem 'shoulda', '2.10.2'
+gem 'timecop', '0.3.1'
+gem 'mocha', '0.9.4'
 
 require 'matchy'
+require 'shoulda'
+require 'timecop'
 require 'mocha'
-require 'custom_matchers'
+require 'pp'
 
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-dir = (Pathname(__FILE__).dirname +  '..' + 'lib').expand_path
-require dir + 'mongo_mapper'
+require 'support/custom_matchers'
+require 'support/test_timing'
 
 class Test::Unit::TestCase
   include CustomMatchers
