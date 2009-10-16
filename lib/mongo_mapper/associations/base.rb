@@ -1,3 +1,28 @@
+module ConstantHelper
+  def self.lookup(class_name, scope)
+    if namespaced?(class_name)
+      class_name.constantize
+    else
+      lookup_in_parent(class_name, scope)
+    end
+  end
+  
+  def self.namespaced?(class_name)
+    class_name.include?("::")
+  end
+  
+  def self.lookup_in_parent(class_name, scope)
+    parent = parent_scope(scope)
+    return nil unless parent.const_defined?(class_name)
+    parent.const_get(class_name)
+  end
+    
+  def self.parent_scope(scope)
+    chain = scope.to_s.split("::")[0 ... -1]
+    chain.reduce(Object) { |m, o| m.const_get(o) }
+  end
+end
+
 module MongoMapper
   module Associations
     class Base
@@ -18,9 +43,9 @@ module MongoMapper
           end
         end
       end
-
+      
       def klass
-        @klass ||= class_name.constantize
+        @klass ||= ConstantHelper.lookup(class_name, options[:scope])
       end
 
       def many?

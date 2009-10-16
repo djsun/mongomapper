@@ -25,7 +25,7 @@ class NamespaceTest < Test::Unit::TestCase
       @role.movie.should == @movie
     end
 
-    should "has_many associations" do
+    should "many associations" do
       @movie.roles.should == [@role]
       @actor.roles.should == [@role]
     end
