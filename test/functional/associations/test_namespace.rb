@@ -2,17 +2,19 @@ require 'test_helper'
 require 'models'
 
 class NamespaceTest < Test::Unit::TestCase
+  include Hollywood
+
   def setup
-    Hollywood::Movie.collection.clear
-    Hollywood::Actor.collection.clear
-    Hollywood::Role.collection.clear
+    Movie.collection.clear
+    Actor.collection.clear
+    Role.collection.clear
   end
   
   context "Hollywood namespace" do
     setup do
-      @movie = Hollywood::Movie.create
-      @actor = Hollywood::Actor.create
-      @role = Hollywood::Role.create(
+      @movie = Movie.create
+      @actor = Actor.create
+      @role = Role.create(
         :movie_id => @movie.id,
         :actor_id => @actor.id
       )
