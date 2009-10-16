@@ -198,13 +198,13 @@ module Hollywood
   class Movie
     include MongoMapper::Document
     
-    many :roles, :foreign_key => :movie_id
+    many :roles
   end
 
   class Actor
     include MongoMapper::Document
     
-    many :roles, :foreign_key => :actor_id
+    many :roles
   end
   
   class Role

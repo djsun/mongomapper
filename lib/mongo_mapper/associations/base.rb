@@ -21,6 +21,10 @@ module ConstantHelper
     chain = scope.to_s.split("::")[0 ... -1]
     chain.reduce(Object) { |m, o| m.const_get(o) }
   end
+  
+  def self.leaf(constant_name)
+    constant_name.split("::").last
+  end
 end
 
 module MongoMapper
