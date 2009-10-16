@@ -669,7 +669,7 @@ class DocumentTest < Test::Unit::TestCase
             @thing.properties << @property3
           end
 
-          should "destroy the thing" do
+          should_eventually "destroy the thing" do
             Thing.count.should == 1
             @property1.destroy
             Thing.count.should == 0
