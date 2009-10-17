@@ -4,12 +4,6 @@ require 'models'
 class NamespaceTest < Test::Unit::TestCase
   include Hollywood
 
-  def setup
-    Movie.collection.clear
-    Actor.collection.clear
-    Role.collection.clear
-  end
-  
   context "Hollywood namespace" do
     setup do
       @movie = Movie.create
