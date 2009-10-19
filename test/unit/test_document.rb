@@ -160,24 +160,62 @@ class DocumentTest < Test::Unit::TestCase
         clone.age.should == 27
       end
     end
-
     
-    context "equality" do
-      should "be equal if id and class are the same" do
-        (@document.new('_id' => 1) == @document.new('_id' => 1)).should be(true)
+    context "==" do
+      should "be == if key values are the same" do
+        doc_1 = @document.new('name' => "Doc 1")
+        doc_2 = @document.new('name' => "Doc 1")
+        doc_1.should == doc_2
+        doc_2.should == doc_1 # check transitivity
       end
 
-      should "not be equal if class same but id different" do
-        (@document.new('_id' => 1) == @document.new('_id' => 2)).should be(false)
+      should "not be == if key values are different" do
+        doc_1 = @document.new('name' => "Doc 1")
+        doc_2 = @document.new('name' => "Doc 2")
+        doc_1.should_not == doc_2
+        doc_2.should_not == doc_1 # check transitivity
       end
 
-      should "not be equal if id same but class different" do
-        @another_document = Class.new do
-          include MongoMapper::Document
-          set_collection_name 'test'
+      should "not care about type" do
+        @person = Class.new do
+          include MongoMapper::EmbeddedDocument
+
+          key :name, String
+          key :age, Integer
         end
+        doc = @document.new('name' => "Doc 1")
+        person = @person.new('name' => "Doc 1")
+        doc.should == person
+        person.should == doc # check transitivity
+      end
+    end
 
-        (@document.new('_id' => 1) == @another_document.new('_id' => 1)).should be(false)
+    context "eql?" do
+      should "be eql? if type matches and key values are the same" do
+        doc_1 = @document.new('name' => "Doc 1")
+        doc_2 = @document.new('name' => "Doc 1")
+        doc_1.should eql?(doc_2)
+        doc_2.should eql?(doc_1) # check transitivity
+      end
+
+      should "not be == if type matches but key values are different" do
+        doc_1 = @document.new('name' => "Doc 1")
+        doc_2 = @document.new('name' => "Doc 2")
+        doc_1.should_not eql?(doc_2)
+        doc_2.should_not eql?(doc_1) # check transitivity
+      end
+
+      should "not be eql? if types are different even if values are the same" do
+        @person = Class.new do
+          include MongoMapper::EmbeddedDocument
+
+          key :name, String
+          key :age, Integer
+        end
+        doc = @document.new('name' => "Doc 1")
+        person = @person.new('name' => "Doc 1")
+        doc.should_not eql?(person)
+        person.should_not eql?(doc) # check transitivity
       end
     end
   end # instance of a document

@@ -270,7 +270,12 @@ module MongoMapper
       end
 
       def ==(other)
-        other.is_a?(self.class) && id == other.id
+        ignore = { '_id' => nil }
+        attributes.merge(ignore) == other.attributes.merge(ignore)
+      end
+      
+      def eql?(other)
+        other.is_a?(self.class) && (self == other)
       end
 
       def id
