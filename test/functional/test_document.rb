@@ -16,6 +16,23 @@ class DocumentTest < Test::Unit::TestCase
     @document.collection.clear
   end
 
+  context "Accessing attributes on a document" do
+    setup do
+      @doc = @document.new(:first_name => 'John', :age => '27')
+    end
+    
+    should "access existing attributes" do
+      @doc[:first_name].should == 'John'
+      @doc[:age].should == 27
+    end
+
+    should "raise an exception for non-existing attributes" do
+      lambda {
+        @doc[:not_here].should == nil
+      }.should raise_error(MongoMapper::KeyNotFound)
+    end
+  end
+
   context "Saving a document with a custom id" do
     should "clear custom id flag when saved" do
       doc = @document.new(:id => '1234')

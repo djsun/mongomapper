@@ -336,7 +336,9 @@ module MongoMapper
         end
 
         def read_attribute(name)
-          value = _keys[name].get(instance_variable_get("@#{name}"))
+          key = _keys[name]
+          raise KeyNotFound, "Could not find key: #{name.inspect}" unless key
+          value = key.get(instance_variable_get("@#{name}"))
           instance_variable_set "@#{name}", value if !frozen?
           value
         end

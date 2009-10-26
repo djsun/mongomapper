@@ -3,6 +3,7 @@ require 'mongo'
 require 'validatable'
 
 module MongoMapper
+  class KeyNotFound < RuntimeError; end
   DocumentNotFound  = Class.new(StandardError)
   DocumentNotValid  = Class.new(StandardError) do
     def initialize(document)
