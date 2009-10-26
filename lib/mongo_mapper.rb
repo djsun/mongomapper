@@ -1,3 +1,5 @@
+require 'rubygems'
+gem 'activesupport', '>= 2.3'
 require 'active_support'
 require 'mongo'
 require 'validatable'
