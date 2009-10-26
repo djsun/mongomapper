@@ -173,8 +173,15 @@ class DocumentTest < Test::Unit::TestCase
         doc_2 = @document.new('name' => "Doc 2")
         doc_1.should_not == doc_2
       end
+      
+      should "not be == when comparing other object types" do
+        doc = @document.new('name' => "Doc")
+        doc.should_not == nil
+        doc.should_not == false
+        doc.should_not == { 'name' => "Doc" }
+      end
 
-      should "not care about type" do
+      should "not care about document type" do
         @person = Class.new do
           include MongoMapper::EmbeddedDocument
 
@@ -195,13 +202,20 @@ class DocumentTest < Test::Unit::TestCase
         doc_1.should eql?(doc_2)
       end
 
-      should "not be == if type matches but key values are different" do
+      should "not be eql? if type matches but key values are different" do
         doc_1 = @document.new('name' => "Doc 1")
         doc_2 = @document.new('name' => "Doc 2")
         doc_1.should_not eql?(doc_2)
       end
 
-      should "not be eql? if types are different even if values are the same" do
+      should "not be eql? when comparing other object types" do
+        doc = @document.new('name' => "Doc")
+        doc.should_not eql?(nil)
+        doc.should_not eql?(false)
+        doc.should_not eql?({ 'name' => "Doc" })
+      end
+
+      should "not be eql? if document types are different even if values are the same" do
         @person = Class.new do
           include MongoMapper::EmbeddedDocument
 

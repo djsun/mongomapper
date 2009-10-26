@@ -269,6 +269,7 @@ module MongoMapper
       end
 
       def ==(other)
+        return false unless other.is_a?(EmbeddedDocument)
         ignore = { '_id' => nil }
         attributes.merge(ignore) == other.attributes.merge(ignore)
       end
