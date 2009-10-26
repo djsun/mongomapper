@@ -1,10 +1,4 @@
-require 'rubygems'
-
-gem 'activesupport', '>= 2.3'
-gem 'mongo', '0.15.1'
-gem 'jnunemaker-validatable', '1.7.4'
-
-require 'activesupport'
+require 'active_support'
 require 'mongo'
 require 'validatable'
 
@@ -60,13 +54,12 @@ module MongoMapper
   module Finders
     def dynamic_find(finder, args)
       attributes = {}
-      find_options = args.extract_options!.deep_merge(:conditions => attributes)
-
       finder.attributes.each_with_index do |attr, index|
         attributes[attr] = args[index]
       end
-
-      result = find(finder.finder, find_options)
+      
+      options = args.extract_options!.merge(attributes)
+      result  = find(finder.finder, options)
 
       if result.nil?
         if finder.bang

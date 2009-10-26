@@ -170,8 +170,8 @@ class ValidationsTest < Test::Unit::TestCase
       doc.save.should be_true
 
       @document \
-        .stubs(:find) \
-        .with(:first, :conditions => {:name => 'joe'}, :limit => 1) \
+        .stubs(:first) \
+        .with(:name => 'joe') \
         .returns(doc)
 
       doc.name = "joe"
@@ -184,12 +184,33 @@ class ValidationsTest < Test::Unit::TestCase
       doc.save.should be_true
 
       @document \
-        .stubs(:find) \
-        .with(:first, :conditions => {:name => 'joe'}, :limit => 1) \
+        .stubs(:first) \
+        .with(:name => 'joe') \
         .returns(doc)
 
       doc2 = @document.new("name" => "joe")
       doc2.should have_error_on(:name)
+    end
+    
+    should "allow multiple blank entries if :allow_blank => true" do
+      document = Class.new do
+        include MongoMapper::Document
+        set_collection_name 'test'
+        
+        key :name
+        validates_uniqueness_of :name, :allow_blank => :true
+      end
+      
+      doc = document.new("name" => "")
+      doc.save.should be_true
+
+      document \
+        .stubs(:first) \
+        .with(:name => '') \
+        .returns(doc)
+
+      doc2 = document.new("name" => "")
+      doc2.should_not have_error_on(:name)
     end
     
     context "scoped by a single attribute" do
@@ -210,8 +231,8 @@ class ValidationsTest < Test::Unit::TestCase
         doc.save.should be_true
         
         @document \
-          .stubs(:find) \
-          .with(:first, :conditions => {:name => 'joe', :scope => "one"}, :limit => 1) \
+          .stubs(:first) \
+          .with(:name => 'joe', :scope => "one") \
           .returns(doc)
 
         doc2 = @document.new("name" => "joe", "scope" => "one")
@@ -223,8 +244,8 @@ class ValidationsTest < Test::Unit::TestCase
         doc.save.should be_true
         
         @document \
-          .stubs(:find) \
-          .with(:first, :conditions => {:name => 'joe', :scope => "two"}, :limit => 1) \
+          .stubs(:first) \
+          .with(:name => 'joe', :scope => 'two') \
           .returns(nil)
 
         doc2 = @document.new("name" => "joe", "scope" => "two")
@@ -251,8 +272,8 @@ class ValidationsTest < Test::Unit::TestCase
         doc.save.should be_true
         
         @document \
-          .stubs(:find) \
-          .with(:first, :conditions => {:name => 'joe', :first_scope => "one", :second_scope => "two"}, :limit => 1) \
+          .stubs(:first) \
+          .with(:name => 'joe', :first_scope => 'one', :second_scope => 'two') \
           .returns(doc)
 
         doc2 = @document.new("name" => "joe", "first_scope" => "one", "second_scope" => "two")
@@ -264,8 +285,8 @@ class ValidationsTest < Test::Unit::TestCase
         doc.save.should be_true
         
         @document \
-          .stubs(:find) \
-          .with(:first, :conditions => {:name => 'joe', :first_scope => "one", :second_scope => "one"}, :limit => 1) \
+          .stubs(:first) \
+          .with(:name => 'joe', :first_scope => 'one', :second_scope => 'one') \
           .returns(nil)
 
         doc2 = @document.new("name" => "joe", "first_scope" => "one", "second_scope" => "one")
@@ -288,8 +309,8 @@ class ValidationsTest < Test::Unit::TestCase
       doc.should_not have_error_on(:name)
       
       @document \
-        .stubs(:find) \
-        .with(:first, :conditions => {:name => 'John'}, :limit => 1) \
+        .stubs(:first) \
+        .with(:name => 'John') \
         .returns(doc)
       
       second_john = @document.create(:name => 'John')
