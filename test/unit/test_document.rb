@@ -166,14 +166,12 @@ class DocumentTest < Test::Unit::TestCase
         doc_1 = @document.new('name' => "Doc 1")
         doc_2 = @document.new('name' => "Doc 1")
         doc_1.should == doc_2
-        doc_2.should == doc_1 # check transitivity
       end
 
       should "not be == if key values are different" do
         doc_1 = @document.new('name' => "Doc 1")
         doc_2 = @document.new('name' => "Doc 2")
         doc_1.should_not == doc_2
-        doc_2.should_not == doc_1 # check transitivity
       end
 
       should "not care about type" do
@@ -186,7 +184,7 @@ class DocumentTest < Test::Unit::TestCase
         doc = @document.new('name' => "Doc 1")
         person = @person.new('name' => "Doc 1")
         doc.should == person
-        person.should == doc # check transitivity
+        person.should == doc # test commutativity
       end
     end
 
@@ -195,14 +193,12 @@ class DocumentTest < Test::Unit::TestCase
         doc_1 = @document.new('name' => "Doc 1")
         doc_2 = @document.new('name' => "Doc 1")
         doc_1.should eql?(doc_2)
-        doc_2.should eql?(doc_1) # check transitivity
       end
 
       should "not be == if type matches but key values are different" do
         doc_1 = @document.new('name' => "Doc 1")
         doc_2 = @document.new('name' => "Doc 2")
         doc_1.should_not eql?(doc_2)
-        doc_2.should_not eql?(doc_1) # check transitivity
       end
 
       should "not be eql? if types are different even if values are the same" do
@@ -215,7 +211,7 @@ class DocumentTest < Test::Unit::TestCase
         doc = @document.new('name' => "Doc 1")
         person = @person.new('name' => "Doc 1")
         doc.should_not eql?(person)
-        person.should_not eql?(doc) # check transitivity
+        person.should_not eql?(doc) # test commutativity
       end
     end
   end # instance of a document
