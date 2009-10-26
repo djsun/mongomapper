@@ -109,7 +109,9 @@ module MongoMapper
         end
 
         def foreign_key
-          @association.options[:foreign_key] || @owner.class.name.underscore.gsub("/", "_") + "_id"
+          @association.options[:foreign_key] || 
+            (ConstantHelper.leaf(@owner.class.name).
+              underscore.gsub("/", "_") + "_id")
         end
     end
   end

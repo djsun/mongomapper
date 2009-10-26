@@ -193,3 +193,27 @@ module TrModels
     key :name, String
   end
 end
+
+module Hollywood
+  class Movie
+    include MongoMapper::Document
+    
+    many :roles
+  end
+
+  class Actor
+    include MongoMapper::Document
+    
+    many :roles
+  end
+  
+  class Role
+    include MongoMapper::Document
+
+    key :movie_id, String
+    key :actor_id, String
+    
+    belongs_to :movie
+    belongs_to :actor
+  end
+end

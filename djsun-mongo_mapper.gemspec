@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{djsun-mongo_mapper}
-  s.version = "0.5.5.1"
+  s.version = "0.5.5.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["John Nunemaker"]
-  s.date = %q{2009-10-16}
+  s.date = %q{2009-10-19}
   s.default_executable = %q{mmconsole}
   s.email = %q{nunemaker@gmail.com}
   s.executables = ["mmconsole"]
@@ -62,6 +62,7 @@ Gem::Specification.new do |s|
      "test/functional/associations/test_many_embedded_proxy.rb",
      "test/functional/associations/test_many_polymorphic_proxy.rb",
      "test/functional/associations/test_many_proxy.rb",
+     "test/functional/associations/test_namespace.rb",
      "test/functional/test_associations.rb",
      "test/functional/test_binary.rb",
      "test/functional/test_callbacks.rb",
@@ -106,6 +107,7 @@ Gem::Specification.new do |s|
      "test/functional/associations/test_many_embedded_proxy.rb",
      "test/functional/associations/test_many_polymorphic_proxy.rb",
      "test/functional/associations/test_many_proxy.rb",
+     "test/functional/associations/test_namespace.rb",
      "test/functional/test_associations.rb",
      "test/functional/test_binary.rb",
      "test/functional/test_callbacks.rb",
