@@ -271,25 +271,28 @@ module TrModels
 end
 
 module Hollywood
-  class Movie
-    include MongoMapper::Document
-    
-    many :roles, :foreign_key => :movie_id
-  end
-
-  class Actor
-    include MongoMapper::Document
-    
-    many :roles, :foreign_key => :actor_id
-  end
+  class Movie; end
+  class Actor; end
+  class Role; end
   
   class Role
     include MongoMapper::Document
-
     key :movie_id, String
     key :actor_id, String
-    
-    belongs_to :movie
-    belongs_to :actor
+
+    belongs_to :movie, :class => Hollywood::Movie
+    belongs_to :actor, :class => Hollywood::Actor
+  end
+
+  class Movie
+    include MongoMapper::Document
+
+    many :roles, :class => Hollywood::Role
+  end
+  
+  class Actor
+    include MongoMapper::Document
+
+    many :roles, :class => Hollywood::Role
   end
 end
