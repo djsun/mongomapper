@@ -26,9 +26,15 @@ class AssociationBaseTest < Test::Unit::TestCase
       Base.new(:many, :smart_people).class_name.should == 'SmartPerson'
     end
     
-    should "be changeable using class_name option" do
+    should "be changeable using class_name option with a string" do
       base = Base.new(:many, :smart_people, :class_name => 'IntelligentPerson')
       base.class_name.should == 'IntelligentPerson'
+    end
+
+    should "be changeable using class_name option with a constant" do
+      class IntelligentPerson; end
+      base = Base.new(:many, :smart_people, :class_name => IntelligentPerson)
+      base.class_name.should == IntelligentPerson
     end
   end
   

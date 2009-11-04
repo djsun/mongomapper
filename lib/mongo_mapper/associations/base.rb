@@ -1,6 +1,8 @@
 module ConstantHelper
   def self.lookup(class_name, scope)
-    if namespaced?(class_name)
+    if class_name.is_a?(Class)
+      class_name
+    elsif namespaced?(class_name)
       class_name.constantize
     else
       lookup_in_parent(class_name, scope)
