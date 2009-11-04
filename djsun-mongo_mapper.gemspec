@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{djsun-mongo_mapper}
-  s.version = "0.5.6.5"
+  s.version = "0.5.6.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["John Nunemaker"]
-  s.date = %q{2009-11-03}
+  s.date = %q{2009-11-04}
   s.default_executable = %q{mmconsole}
   s.description = %q{Awesome gem for modeling your domain and storing it in mongo}
   s.email = %q{nunemaker@gmail.com}
