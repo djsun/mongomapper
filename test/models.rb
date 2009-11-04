@@ -274,13 +274,13 @@ module Hollywood
   class Movie
     include MongoMapper::Document
     
-    many :roles, :class_name => "Hollywood::Role", :foreign_key => :movie_id
+    many :roles, :foreign_key => :movie_id
   end
 
   class Actor
     include MongoMapper::Document
     
-    many :roles, :class_name => "Hollywood::Role", :foreign_key => :actor_id
+    many :roles, :foreign_key => :actor_id
   end
   
   class Role
@@ -289,7 +289,7 @@ module Hollywood
     key :movie_id, String
     key :actor_id, String
     
-    belongs_to :movie, :class_name => "Hollywood::Movie"
-    belongs_to :actor, :class_name => "Hollywood::Actor"
+    belongs_to :movie
+    belongs_to :actor
   end
 end
