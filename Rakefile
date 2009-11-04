@@ -5,20 +5,20 @@ require 'yard'
 require 'yard/rake/yardoc_task'
 
 Jeweler::Tasks.new do |gem|
-  gem.name        = "mongo_mapper"
-  gem.summary     = %Q{Awesome gem for modeling your domain and storing it in mongo}
+  gem.name        = "djsun-mongo_mapper"
+  gem.summary     = %(Model your domain, store it in MongoDB)
   gem.email       = "nunemaker@gmail.com"
   gem.homepage    = "http://github.com/jnunemaker/mongomapper"
-  gem.authors     = ["John Nunemaker"]
+  gem.authors     = ["John Nunemaker", "David James"]
   
   gem.add_dependency('activesupport', '>= 2.3')
-  gem.add_dependency('mongo', '0.16')
-  gem.add_dependency('jnunemaker-validatable', '1.8.1')
+  gem.add_dependency('mongo', '>= 0.16')
+  gem.add_dependency('jnunemaker-validatable', '>= 1.8.1')
   
-  gem.add_development_dependency('jnunemaker-matchy', '0.4.0')
-  gem.add_development_dependency('shoulda', '2.10.2')
-  gem.add_development_dependency('timecop', '0.3.1')
-  gem.add_development_dependency('mocha', '0.9.4')
+  gem.add_development_dependency('jnunemaker-matchy', '>= 0.4.0')
+  gem.add_development_dependency('shoulda', '>= 2.10.2')
+  gem.add_development_dependency('timecop', '>= 0.3.2')
+  gem.add_development_dependency('mocha', '>= 0.9.8')
 end
 
 Jeweler::GemcutterTasks.new
