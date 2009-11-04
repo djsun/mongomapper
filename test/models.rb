@@ -280,19 +280,19 @@ module Hollywood
     key :movie_id, String
     key :actor_id, String
 
-    belongs_to :movie, :class => Hollywood::Movie
-    belongs_to :actor, :class => Hollywood::Actor
+    belongs_to :movie
+    belongs_to :actor
   end
 
   class Movie
     include MongoMapper::Document
 
-    many :roles, :class => Hollywood::Role
+    many :roles
   end
   
   class Actor
     include MongoMapper::Document
 
-    many :roles, :class => Hollywood::Role
+    many :roles
   end
 end
